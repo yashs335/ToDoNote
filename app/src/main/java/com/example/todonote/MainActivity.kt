@@ -9,14 +9,22 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.example.todonote.handler.DatabaseHandler
 import com.example.todonote.model.TaskModel
 
 class MainActivity : AppCompatActivity() {
+
+    private val databaseHandler : DatabaseHandler = DatabaseHandler(this)
+
+    private var taskList : ArrayList<TaskModel> = ArrayList()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
+        taskList = databaseHandler.readAllTask()
 //
 //        startActivity(intent.apply {  })
 

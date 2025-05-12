@@ -1,5 +1,6 @@
 package com.example.todonote
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -13,7 +14,7 @@ import com.example.todonote.model.TaskModel
 
 class AddNewTaskActivity : AppCompatActivity() {
 
-    val databaseHandler : DatabaseHandler = DatabaseHandler(this)
+    private val databaseHandler : DatabaseHandler = DatabaseHandler(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +31,7 @@ class AddNewTaskActivity : AppCompatActivity() {
             }else{
                 val taskmodel : TaskModel = TaskModel(1,editText_title.text.toString(),editText_body.text.toString())
                 databaseHandler.createNewTask(taskmodel)
+                startActivity(Intent(this,MainActivity::class.java))
             }
         }
 

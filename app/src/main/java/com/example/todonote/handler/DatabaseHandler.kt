@@ -50,4 +50,31 @@ class DatabaseHandler  (private val context: Context) : SQLiteOpenHelper(context
             Toast.makeText(context, "TASK ADDED",Toast.LENGTH_LONG).show()
 
     }
+
+    fun readAllTask() : ArrayList<TaskModel>{
+        val taskList : ArrayList<TaskModel> = ArrayList()
+
+        val db = this.readableDatabase
+
+        val query = "SELECT * FROM "+ TABLE_NAME
+
+        val res = db.rawQuery(query,null)
+
+        if(res.moveToFirst()){
+            do {
+                val id : Int = res.getString(res.getColumnIndexOrThrow(COL_ID)).toInt()
+                val taskTitle : String = res.getString(res.getColumnIndexOrThrow(COL_TASK_TITLE))
+                val taskBody : String = res.getString(res.getColumnIndexOrThrow(COL_TASK))
+                val taskModel : TaskModel = TaskModel(id,taskTitle,taskBody)
+//                Toast.makeText(context, "Title : "+taskTitle+" TASK : "+taskBody,Toast.LENGTH_LONG).show()
+                taskList.add(taskModel)
+            }while (res.moveToNext())
+
+        }else{
+            Toast.makeText(context, "NO Task ",Toast.LENGTH_LONG).show()
+        }
+        res.close()
+        db.close()
+        return taskList
+    }
 }

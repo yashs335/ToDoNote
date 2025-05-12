@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/add_task_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_margin="10dp"
+        android:orientation="vertical"
+        tools:context=".AddNewTask"
+        >
+        <EditText
+            android:id="@+id/task_title_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:inputType="text"
+            android:autofillHints="New Task"
+            android:hint="Enter the task title"
+            />
+        <EditText
+            android:id="@+id/task_body_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:autofillHints="hello this is my new task"
+            android:inputType="textImeMultiLine"
+            android:hint="ENter the task"
+            />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/add_task_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ADD TASK"
+            android:textStyle="bold"
+            android:layout_marginTop="50dp"
+            />
+
+
+    </LinearLayout>

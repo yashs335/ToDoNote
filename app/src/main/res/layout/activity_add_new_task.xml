@@ -1,47 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".AddNewTaskActivity">
 
 
-    <TextView
-        android:id="@+id/app_bar_add_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="ADD TASK"
-        android:textColor="@color/white"
-        android:textSize="30dp"
-        android:textStyle="bold"
-        app:layout_constraintBaseline_toTopOf="parent"
-        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_margin="10dp"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingTop="16dp"
+        android:background="#673AB7"
         >
+        <TextView
+            android:id="@+id/app_bar_add_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="ADD TASK"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            app:layout_constraintBaseline_toTopOf="parent"
+            />
+
+    </LinearLayout>
+
     <EditText
         android:id="@+id/task_title_edit_text"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:inputType="text"
+        android:layout_marginVertical="10dp"
         android:autofillHints="New Task"
         android:hint="Enter the task title"
+        android:layout_marginHorizontal="16dp"
         />
     <EditText
         android:id="@+id/task_body_edit_text"
         android:layout_width="match_parent"
+        android:layout_marginHorizontal="16dp"
         android:layout_height="50dp"
+        android:layout_marginVertical="10dp"
         android:autofillHints="hello this is my new task"
         android:inputType="textImeMultiLine"
         android:hint="Enter the task"
@@ -51,9 +55,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="ADD TASK"
+        android:background="@drawable/roundable_button"
+        android:layout_marginHorizontal="16dp"
+        android:textColor="@color/white"
+        android:textSize="20dp"
         android:textStyle="bold"
         android:layout_marginTop="50dp"
         />
     </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>

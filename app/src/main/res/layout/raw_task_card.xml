@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/raw_task_card"
     android:layout_marginHorizontal="10dp"
     android:foregroundGravity="center"
     android:background="#9B9797"

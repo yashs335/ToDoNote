@@ -9,6 +9,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.todonote.adaptor.TaskAdaptor
 import com.example.todonote.handler.DatabaseHandler
 import com.example.todonote.model.TaskModel
 
@@ -24,9 +27,20 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        taskList = databaseHandler.readAllTask()
 //
 //        startActivity(intent.apply {  })
+
+//        val recyclerView : RecyclerView = findViewById(R.id.recyclerView)
+        var recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+        recyclerView.layoutManager =  LinearLayoutManager(this)
+
+        taskList = databaseHandler.readAllTask()
+
+        val recyclerAdaptor : TaskAdaptor = TaskAdaptor(this,taskList)
+        recyclerView.adapter = recyclerAdaptor
+
+
+
 
         val button : Button = findViewById(R.id.navigate_add_task)
         button.setOnClickListener{
@@ -34,11 +48,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+//            insets
+//        }
     }
 
 //    private fun navigateToAddNewTask(){

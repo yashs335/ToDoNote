@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import android.widget.Toast
 import com.example.todonote.model.TaskModel
 
@@ -76,5 +77,17 @@ class DatabaseHandler  (private val context: Context) : SQLiteOpenHelper(context
         res.close()
         db.close()
         return taskList
+    }
+
+
+    fun deleteTheTask(id : Int){
+        val db = this.writableDatabase
+
+        val query = "DELETE FROM $TABLE_NAME WHERE id = $id"
+
+        val res = db.delete(TABLE_NAME, "$COL_ID = ?", arrayOf(id.toString()))
+//            db.execSQL(query)
+        Log.i("del",query+res.toString())
+
     }
 }

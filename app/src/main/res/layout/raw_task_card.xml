@@ -32,6 +32,8 @@
                 android:textStyle="bold"
                 android:textSize="30dp"
                 android:id="@+id/title"
+                android:maxLines="1"
+                android:ellipsize="end"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -39,8 +41,8 @@
                 android:text="This is the subtitle of the do list "
                 android:textStyle="italic"
                 android:textSize="20dp"
-                android:maxLines="1"
-
+                android:maxLines="3"
+                android:ellipsize="end"
                 android:id="@+id/sub_title"
                 />
         </LinearLayout>

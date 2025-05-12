@@ -6,11 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todonote.R
+import com.example.todonote.handler.DatabaseHandler
 import com.example.todonote.model.TaskModel
 import com.example.todonote.view_holder.TaskViewHolder
 
-class TaskAdaptor(private val context: Context,private val taskList: ArrayList<TaskModel>) :
+class TaskAdaptor(
+    private val onCheckChanged:(position : Int)->Unit,
+    private val context: Context,
+    private val taskList: ArrayList<TaskModel>
+)
+    :
     RecyclerView.Adapter<TaskViewHolder>() {
+
+
+    private var databaseHandler : DatabaseHandler = DatabaseHandler(
+        context = context
+    )
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -31,5 +42,8 @@ class TaskAdaptor(private val context: Context,private val taskList: ArrayList<T
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         holder.title.setText(taskList.get(position).title)
         holder.subtitle.setText(taskList.get(position).task)
+        holder.button.setOnClickListener{
+            onCheckChanged(position)
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.example.todonote
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     private val databaseHandler : DatabaseHandler = DatabaseHandler(this)
 
     private var taskList : ArrayList<TaskModel> = ArrayList()
-
+    lateinit var recyclerAdaptor : TaskAdaptor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,15 +32,22 @@ class MainActivity : AppCompatActivity() {
 //        startActivity(intent.apply {  })
 
 //        val recyclerView : RecyclerView = findViewById(R.id.recyclerView)
-        var recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager =  LinearLayoutManager(this)
+
 
         taskList = databaseHandler.readAllTask()
 
-        val recyclerAdaptor : TaskAdaptor = TaskAdaptor(this,taskList)
+
+        recyclerAdaptor = TaskAdaptor(
+            { position: Int -> delVal(position)
+            },
+            this,
+            taskList
+        )
+
+
         recyclerView.adapter = recyclerAdaptor
-
-
 
 
         val button : Button = findViewById(R.id.navigate_add_task)
@@ -48,21 +56,12 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-//            insets
-//        }
     }
 
-//    private fun navigateToAddNewTask(){
-//        val fragmentManager : FragmentManager = supportFragmentManager
-//        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-//
-//        val addNewTask : AddNewTask = AddNewTask()
-//        fragmentTransaction.replace(R.id.add_task_fragment,addNewTask)
-//        fragmentTransaction.addToBackStack(null)
-//        fragmentTransaction.commit()
-//
-//    }
+    fun delVal(position : Int)  {
+        val taskId = taskList[position].id
+        taskList.removeAt(position)
+        databaseHandler.deleteTheTask(taskId)
+        recyclerAdaptor.notifyItemRemoved(position)
+    }
 }

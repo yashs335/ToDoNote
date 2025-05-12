@@ -26,7 +26,7 @@ class AddNewTaskActivity : AppCompatActivity() {
         val editText_body : EditText = findViewById(R.id.task_body_edit_text)
 
         button.setOnClickListener{
-            if(editText_body.text.isNullOrBlank() && editText_title.text.isNullOrBlank()){
+            if(editText_body.text.trim().isEmpty() || editText_title.text.trim().isEmpty()){
                 Toast.makeText(this,"Full fill the data",Toast.LENGTH_LONG).show()
             }else{
                 val taskmodel : TaskModel = TaskModel(1,editText_title.text.toString(),editText_body.text.toString())

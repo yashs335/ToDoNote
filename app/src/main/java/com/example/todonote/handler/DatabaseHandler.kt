@@ -36,20 +36,33 @@ class DatabaseHandler  (private val context: Context) : SQLiteOpenHelper(context
 
     }
 
-    fun createNewTask(taskModel: TaskModel){
+    fun createNewTask(id : Int?,title : String,body : String,update : Boolean = false){
+
         val db = this.writableDatabase
 
         var cv = ContentValues()
-        cv.put(COL_TASK_TITLE,taskModel.title)
-        cv.put(COL_TASK,taskModel.task)
+        cv.put(COL_TASK_TITLE,title)
+        cv.put(COL_TASK,body)
 
-        var res = db.insert(TABLE_NAME,null,cv)
 
-        if(res == (-1).toLong())
-            Toast.makeText(context, "FAILED TO ADD TASK",Toast.LENGTH_LONG).show()
-        else
-            Toast.makeText(context, "TASK ADDED",Toast.LENGTH_LONG).show()
+        if(update){
+            db.update(
+                TABLE_NAME,
+                cv,
+                "$COL_ID = ?",
+                arrayOf(id.toString())
+            )
+            Log.i("SQL","update performed")
+        }else{
+            var res = db.insert(TABLE_NAME,null,cv)
 
+            if(res == (-1).toLong())
+                Toast.makeText(context, "FAILED TO ADD TASK",Toast.LENGTH_LONG).show()
+            else
+                Toast.makeText(context, "Task added",Toast.LENGTH_LONG).show()
+
+
+        }
     }
 
     fun readAllTask() : ArrayList<TaskModel>{
@@ -57,7 +70,7 @@ class DatabaseHandler  (private val context: Context) : SQLiteOpenHelper(context
 
         val db = this.readableDatabase
 
-        val query = "SELECT * FROM "+ TABLE_NAME
+        val query = "SELECT * FROM $TABLE_NAME"
 
         val res = db.rawQuery(query,null)
 
@@ -83,11 +96,14 @@ class DatabaseHandler  (private val context: Context) : SQLiteOpenHelper(context
     fun deleteTheTask(id : Int){
         val db = this.writableDatabase
 
-        val query = "DELETE FROM $TABLE_NAME WHERE id = $id"
 
         val res = db.delete(TABLE_NAME, "$COL_ID = ?", arrayOf(id.toString()))
 //            db.execSQL(query)
-        Log.i("del",query+res.toString())
+
+        db.close()
 
     }
+
+
+
 }

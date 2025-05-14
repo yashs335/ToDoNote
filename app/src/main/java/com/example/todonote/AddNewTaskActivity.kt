@@ -2,26 +2,20 @@ package com.example.todonote
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.navigation.NavController
-import com.example.todonote.handler.DatabaseHandler
-import com.example.todonote.model.TaskModel
+import com.example.todonote.handler.NoteDatabaseHandler
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 class AddNewTaskActivity() : AppCompatActivity() {
 
-    private val databaseHandler : DatabaseHandler = DatabaseHandler(this)
+    private val noteDatabaseHandler : NoteDatabaseHandler = NoteDatabaseHandler(this)
     private var taskId: Int? = null
     private var taskTitle: String? = null
     private var taskBody: String? = null
@@ -72,7 +66,7 @@ class AddNewTaskActivity() : AppCompatActivity() {
             if(editText_body.text.trim().isEmpty() || editText_title.text.trim().isEmpty()){
                 Toast.makeText(this,"Please full fill the task ",Toast.LENGTH_LONG).show()
             }else{
-                databaseHandler.createNewTask(taskId,editText_title.text.toString(),editText_body.text.toString(),update)
+                noteDatabaseHandler.createNewTask(taskId,editText_title.text.toString(),editText_body.text.toString(),update)
                 startActivity(Intent(this,MainActivity::class.java))
             }
         }

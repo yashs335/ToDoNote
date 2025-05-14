@@ -4,10 +4,9 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todonote.R
-import com.example.todonote.handler.DatabaseHandler
+import com.example.todonote.handler.NoteDatabaseHandler
 import com.example.todonote.model.TaskModel
 import com.example.todonote.view_holder.TaskViewHolder
 
@@ -22,7 +21,7 @@ class TaskAdaptor(
     RecyclerView.Adapter<TaskViewHolder>() {
 
 
-    private var databaseHandler : DatabaseHandler = DatabaseHandler(
+    private var noteDatabaseHandler : NoteDatabaseHandler = NoteDatabaseHandler(
         context = context
     )
 

@@ -2,25 +2,20 @@ package com.example.todonote
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todonote.adaptor.TaskAdaptor
-import com.example.todonote.handler.DatabaseHandler
+import com.example.todonote.handler.NoteDatabaseHandler
 import com.example.todonote.model.TaskModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val databaseHandler : DatabaseHandler = DatabaseHandler(this)
+    private val noteDatabaseHandler : NoteDatabaseHandler = NoteDatabaseHandler(this)
 
     private var taskList : ArrayList<TaskModel> = ArrayList()
     lateinit var recyclerAdaptor : TaskAdaptor
@@ -31,6 +26,9 @@ class MainActivity : AppCompatActivity() {
 //        finish()
         setContentView(R.layout.activity_main)
 
+        val intent : Intent = Intent(this,LoginActivity::class.java)
+        startActivity(intent)
+
 //
 //        startActivity(intent.apply {  })
 
@@ -39,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager =  LinearLayoutManager(this)
 
 
-        taskList = databaseHandler.readAllTask()
+        taskList = noteDatabaseHandler.readAllTask()
 
 
         recyclerAdaptor = TaskAdaptor(
@@ -90,7 +88,7 @@ class MainActivity : AppCompatActivity() {
             .setMessage("Do you really delete the note ? \n ${taskModel.title} \n ${taskModel.task.to(20)}")
             .setPositiveButton("Yes"){dialog,which ->
                 taskList.removeAt(position)
-                databaseHandler.deleteTheTask(taskId)
+                noteDatabaseHandler.deleteTheTask(taskId)
                 recyclerAdaptor.notifyItemRemoved(position)
                 Toast.makeText(this, "Task deleted", Toast.LENGTH_SHORT).show()
                 dialog.dismiss()

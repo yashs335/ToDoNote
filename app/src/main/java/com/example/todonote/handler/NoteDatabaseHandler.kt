@@ -16,7 +16,7 @@ val COL_TASK_TITLE = "task_title"
 val COL_TASK = "task"
 val COL_DATE = "modified_date"
 
-class DatabaseHandler  (private val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,null,2){
+class NoteDatabaseHandler  (private val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,null,2){
     override fun onCreate(db: SQLiteDatabase?) {
 
 //        val createTable = "CREATE TABLE "+ TABLE_NAME + "("+

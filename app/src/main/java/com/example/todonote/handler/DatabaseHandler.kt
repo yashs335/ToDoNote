@@ -1,5 +1,6 @@
 package com.example.todonote.handler
-
+import java.text.SimpleDateFormat
+import java.util.*
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -13,8 +14,9 @@ val TABLE_NAME = "ToDO"
 val COL_ID = "id"
 val COL_TASK_TITLE = "task_title"
 val COL_TASK = "task"
+val COL_DATE = "modified_date"
 
-class DatabaseHandler  (private val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,null,1){
+class DatabaseHandler  (private val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,null,2){
     override fun onCreate(db: SQLiteDatabase?) {
 
 //        val createTable = "CREATE TABLE "+ TABLE_NAME + "("+
@@ -22,10 +24,12 @@ class DatabaseHandler  (private val context: Context) : SQLiteOpenHelper(context
 //                COL_TASK_TITLE + " VARCHAR(50) NOT NULL ,"+
 //                COL_TASK + " VARCHAR(200) NOT NULL )";
 
-        val createTable = "CREATE TABLE " + TABLE_NAME + " (" +
-                COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL_TASK_TITLE + " VARCHAR(50) NOT NULL, " +
-                COL_TASK + " VARCHAR(200) NOT NULL)"
+
+        val createTable = "CREATE TABLE $TABLE_NAME (" +
+                "$COL_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "$COL_TASK_TITLE VARCHAR(50) NOT NULL, " +
+                "$COL_TASK VARCHAR(200) NOT NULL, " +
+                "$COL_DATE VARCHAR(50) NOT NULL)"
 
 
         db?.execSQL(createTable)
@@ -33,17 +37,24 @@ class DatabaseHandler  (private val context: Context) : SQLiteOpenHelper(context
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-
+        if (oldVersion < 2) {
+            Log.d("DB_UPGRADE", "Upgrading database from $oldVersion to $newVersion")
+            val query = "ALTER TABLE $TABLE_NAME ADD COLUMN $COL_DATE VARCHAR(50)"
+            db?.execSQL(query)
+        }
     }
+
 
     fun createNewTask(id : Int?,title : String,body : String,update : Boolean = false){
 
         val db = this.writableDatabase
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault())
+        val currentDate = dateFormat.format(Date())
 
         var cv = ContentValues()
         cv.put(COL_TASK_TITLE,title)
         cv.put(COL_TASK,body)
-
+        cv.put(COL_DATE, currentDate)
 
         if(update){
             db.update(
@@ -79,7 +90,9 @@ class DatabaseHandler  (private val context: Context) : SQLiteOpenHelper(context
                 val id : Int = res.getString(res.getColumnIndexOrThrow(COL_ID)).toInt()
                 val taskTitle : String = res.getString(res.getColumnIndexOrThrow(COL_TASK_TITLE))
                 val taskBody : String = res.getString(res.getColumnIndexOrThrow(COL_TASK))
-                val taskModel : TaskModel = TaskModel(id,taskTitle,taskBody)
+                val date = res.getString(res.getColumnIndexOrThrow(COL_DATE) ?: 0)?: ""
+
+                val taskModel : TaskModel = TaskModel(id,taskTitle,taskBody,date)
 //                Toast.makeText(context, "Title : "+taskTitle+" TASK : "+taskBody,Toast.LENGTH_LONG).show()
                 taskList.add(taskModel)
             }while (res.moveToNext())

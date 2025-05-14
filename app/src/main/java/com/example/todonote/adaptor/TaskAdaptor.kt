@@ -64,8 +64,9 @@ class TaskAdaptor(
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
 //        holder.itemView.performLongClick()
-        holder.title.setText(taskList.get(position).title)
-        holder.subtitle.setText(taskList.get(position).task)
+        holder.title.text = taskList[position].title
+        holder.subtitle.text = taskList[position].task
+        holder.date.text = taskList[position].date
 
     }
 }

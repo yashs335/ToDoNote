@@ -71,18 +71,25 @@
 
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Friday , 10-02-2003"
+        android:layout_marginHorizontal="16dp"
+        />
     <EditText
         android:id="@+id/task_title_edit_text"
         android:background="@android:color/transparent"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:inputType="text"
-        android:layout_marginVertical="10dp"
         android:autofillHints="New Task"
         android:hint="UnTitle"
         android:textStyle="bold"
         android:text="Untitle"
         android:textColor="@color/white"
+        android:layout_marginBottom="10dp"
         android:layout_marginHorizontal="16dp"
         />
     <EditText

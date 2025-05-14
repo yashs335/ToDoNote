@@ -68,12 +68,14 @@ class MainActivity : AppCompatActivity() {
 
     fun updateValue(position: Int){
         val taskId = taskList[position].id
-        val taskModel = taskList.get(position)
+        val taskModel = taskList[position]
         val intent : Intent = Intent(this,AddNewTaskActivity()::class.java)
 
         intent.putExtra("taskId",taskModel.id)
         intent.putExtra("taskTitle",taskModel.title)
         intent.putExtra("taskBody",taskModel.task)
+        intent.putExtra("taskDate",taskModel.date)
+
 
         startActivity(intent)
     }

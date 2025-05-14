@@ -22,6 +22,7 @@ class AddNewTaskActivity() : AppCompatActivity() {
     private var taskId: Int? = null
     private var taskTitle: String? = null
     private var taskBody: String? = null
+    private var taskDate: String? = null
     private var update: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,21 +37,25 @@ class AddNewTaskActivity() : AppCompatActivity() {
         val editText_title : EditText = findViewById(R.id.task_title_edit_text)
         val editText_body : EditText = findViewById(R.id.task_body_edit_text)
         val textView : TextView = findViewById(R.id.app_bar_title)
+        val textViewDate : TextView = findViewById(R.id.date)
 
 
         taskId = intent.getIntExtra("taskId",-1)
         taskTitle = intent.getStringExtra("taskTitle")
         taskBody = intent.getStringExtra("taskBody")
+        taskDate = intent.getStringExtra("taskDate")
 
 
         intent.removeExtra("taskId")
         intent.removeExtra("taskTitle")
         intent.removeExtra("taskBody")
+        intent.removeExtra("taskDate")
 
-        if(taskTitle != null || taskBody != null){
+        if(taskTitle != null || taskBody != null || taskDate != null){
             textView.setText("Edit note")
             editText_body.setText(taskBody)
             editText_title.setText(taskTitle)
+            textViewDate.setText(taskDate)
             update = true
         }
 

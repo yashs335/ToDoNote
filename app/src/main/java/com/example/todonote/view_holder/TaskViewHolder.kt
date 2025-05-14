@@ -14,6 +14,7 @@ class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     val title : TextView = itemView.findViewById(R.id.title)
     val subtitle : TextView = itemView.findViewById(R.id.sub_title)
+    val date: TextView = itemView.findViewById(R.id.task_date)
 
 
 
@@ -21,6 +22,7 @@ class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         super.itemView
         title
         subtitle
+        date
     }
 
 }

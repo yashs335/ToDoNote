@@ -10,12 +10,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todonote.adaptor.TaskAdaptor
-import com.example.todonote.handler.NoteDatabaseHandler
+import com.example.todonote.handler.DatabaseHandler
 import com.example.todonote.model.TaskModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val noteDatabaseHandler : NoteDatabaseHandler = NoteDatabaseHandler(this)
+    private val databaseHandler : DatabaseHandler = DatabaseHandler(this)
 
     private var taskList : ArrayList<TaskModel> = ArrayList()
     lateinit var recyclerAdaptor : TaskAdaptor
@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager =  LinearLayoutManager(this)
 
 
-        taskList = noteDatabaseHandler.readAllTask()
+        taskList = databaseHandler.readAllTask()
 
 
         recyclerAdaptor = TaskAdaptor(
@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
             .setMessage("Do you really delete the note ? \n ${taskModel.title} \n ${taskModel.task.to(20)}")
             .setPositiveButton("Yes"){dialog,which ->
                 taskList.removeAt(position)
-                noteDatabaseHandler.deleteTheTask(taskId)
+                databaseHandler.deleteTheTask(taskId)
                 recyclerAdaptor.notifyItemRemoved(position)
                 Toast.makeText(this, "Task deleted", Toast.LENGTH_SHORT).show()
                 dialog.dismiss()

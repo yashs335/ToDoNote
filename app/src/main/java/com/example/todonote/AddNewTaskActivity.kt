@@ -8,14 +8,14 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import com.example.todonote.handler.NoteDatabaseHandler
+import com.example.todonote.handler.DatabaseHandler
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 class AddNewTaskActivity() : AppCompatActivity() {
 
-    private val noteDatabaseHandler : NoteDatabaseHandler = NoteDatabaseHandler(this)
+    private val databaseHandler : DatabaseHandler = DatabaseHandler(this)
     private var taskId: Int? = null
     private var taskTitle: String? = null
     private var taskBody: String? = null
@@ -66,7 +66,7 @@ class AddNewTaskActivity() : AppCompatActivity() {
             if(editText_body.text.trim().isEmpty() || editText_title.text.trim().isEmpty()){
                 Toast.makeText(this,"Please full fill the task ",Toast.LENGTH_LONG).show()
             }else{
-                noteDatabaseHandler.createNewTask(taskId,editText_title.text.toString(),editText_body.text.toString(),update)
+                databaseHandler.createNewTask(taskId,editText_title.text.toString(),editText_body.text.toString(),update)
                 startActivity(Intent(this,MainActivity::class.java))
             }
         }

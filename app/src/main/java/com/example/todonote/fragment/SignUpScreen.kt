@@ -3,10 +3,12 @@ package com.example.todonote.fragment
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.todonote.R
 import com.example.todonote.communicator.Communicator
+import com.example.todonote.handler.DatabaseHandler
 
 class SignUpScreen : Fragment(R.layout.sign_up_screen) {
 
@@ -21,9 +23,11 @@ class SignUpScreen : Fragment(R.layout.sign_up_screen) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         view.findViewById<TextView?>(R.id.sign_in_nav_button)?.setOnClickListener {
             Log.i("nav","navigation run in sign up")
             communicator.setFragment(LoginFragment())
         }
+
     }
 }

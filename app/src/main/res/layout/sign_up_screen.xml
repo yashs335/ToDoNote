@@ -24,103 +24,108 @@
         android:outlineAmbientShadowColor="@color/black"
         android:outlineSpotShadowColor="@color/black"
         >
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:scrollbarAlwaysDrawVerticalTrack="true"
-            android:orientation="vertical"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:text="Sign up"
-                android:textSize="35sp"
-                android:textStyle="bold"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="50dp"
-                />
-            <EditText
-                android:id="@+id/edit_text_full_name_sign"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="50dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginHorizontal="16dp"
-                android:autofillHints="user_name"
-                android:hint="Full Name"
-                android:background="@drawable/roundable_button"
-                android:backgroundTint="@color/edit_tile_color"
-                android:inputType="text"
-                android:padding="10dp"
-                />
-            <EditText
-                android:id="@+id/edit_text_email_name_sign"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginVertical="8dp"
-                android:autofillHints="abcd@gmail.com"
-                android:hint="Email ID"
-                android:background="@drawable/roundable_button"
-                android:backgroundTint="@color/edit_tile_color"
-                android:inputType="textEmailAddress"
-                android:padding="10dp"
-                />
+            android:layout_height="match_parent">
 
-            <EditText
-                android:id="@+id/edit_text_password_name_sign"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginHorizontal="16dp"
-                android:autofillHints="password"
-                android:layout_marginVertical="8dp"
-                android:hint="Password"
-                android:background="@drawable/roundable_button"
-                android:backgroundTint="@color/edit_tile_color"
-                android:inputType="textPassword"
-                android:padding="10dp"
-                />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/sign_up_button"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="50dp"
-                android:background="@drawable/roundable_button"
-                android:backgroundTint="@color/button_color"
-                android:text="Sign up"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                />
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:scrollbarAlwaysDrawVerticalTrack="true"
+                android:orientation="vertical"
+                >
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Already have an account?"
-                    />
-                <TextView
-                    android:id="@+id/sign_in_nav_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sign in"
+                    android:gravity="start"
+                    android:text="Sign up"
+                    android:textSize="35sp"
                     android:textStyle="bold"
-                    android:layout_marginStart="10dp"
-                    android:textSize="15sp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="50dp"
                     />
+                <EditText
+                    android:id="@+id/edit_text_full_name_signup"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:autofillHints="user_name"
+                    android:hint="Full Name"
+                    android:background="@drawable/roundable_button"
+                    android:backgroundTint="@color/edit_tile_color"
+                    android:inputType="text"
+                    android:padding="10dp"
+                    />
+                <EditText
+                    android:id="@+id/edit_text_email_signup"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="8dp"
+                    android:autofillHints="abcd@gmail.com"
+                    android:hint="Email ID"
+                    android:background="@drawable/roundable_button"
+                    android:backgroundTint="@color/edit_tile_color"
+                    android:inputType="textEmailAddress"
+                    android:padding="10dp"
+                    />
+
+                <EditText
+                    android:id="@+id/edit_text_password_signup"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:autofillHints="password"
+                    android:layout_marginVertical="8dp"
+                    android:hint="Password"
+                    android:background="@drawable/roundable_button"
+                    android:backgroundTint="@color/edit_tile_color"
+                    android:inputType="textPassword"
+                    android:padding="10dp"
+                    />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/sign_up_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="50dp"
+                    android:background="@drawable/roundable_button"
+                    android:backgroundTint="@color/button_color"
+                    android:text="Sign up"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Already have an account?"
+                        />
+                    <TextView
+                        android:id="@+id/sign_in_nav_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sign in"
+                        android:textStyle="bold"
+                        android:layout_marginStart="10dp"
+                        android:textSize="15sp"
+                        />
+
+                </LinearLayout>
+
 
             </LinearLayout>
-
-
-        </LinearLayout>
+        </ScrollView>
     </androidx.cardview.widget.CardView>
 
 

@@ -1,8 +1,10 @@
 package com.example.todonote
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
@@ -23,36 +25,35 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-//        finish()
         setContentView(R.layout.activity_main)
 
-        val intent : Intent = Intent(this,LoginActivity::class.java)
-        startActivity(intent)
+        val sharedPreferences = this.getSharedPreferences("user", MODE_PRIVATE)
+        val email : String = sharedPreferences.getString("user_email","").toString()
 
-//
-//        startActivity(intent.apply {  })
+        if(email.isEmpty()){
+            val intent : Intent = Intent(this,LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+        }else{
+            taskList = databaseHandler.readAllTask(email)
+            val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+            recyclerView.layoutManager = LinearLayoutManager(this)
 
-//        val recyclerView : RecyclerView = findViewById(R.id.recyclerView)
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        recyclerView.layoutManager =  LinearLayoutManager(this)
+            recyclerAdaptor = TaskAdaptor(
+                { position: Int ->
+                    updateValue(position)
+                },
+                { position: Int ->
+                    delVal(position)
+                },
+                this,
+                taskList
+            )
+            recyclerView.adapter = recyclerAdaptor
 
+        }
 
-        taskList = databaseHandler.readAllTask()
-
-
-        recyclerAdaptor = TaskAdaptor(
-            {
-                position: Int -> updateValue(position)
-            },
-            {
-                position: Int ->  delVal(position)
-            },
-            this,
-            taskList
-        )
-
-
-        recyclerView.adapter = recyclerAdaptor
 
 
 
@@ -60,6 +61,15 @@ class MainActivity : AppCompatActivity() {
         button.setOnClickListener{
             val intent : Intent = Intent(this,AddNewTaskActivity::class.java)
             startActivity(intent)
+        }
+
+        val editProfileButton : ImageButton = findViewById(R.id.profile_edit_nav)
+        editProfileButton.setOnClickListener{
+            databaseHandler.logOut()
+            val intent: Intent = Intent(this, LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            this.startActivity(intent)
         }
 
     }
@@ -72,7 +82,7 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra("taskId",taskModel.id)
         intent.putExtra("taskTitle",taskModel.title)
         intent.putExtra("taskBody",taskModel.task)
-        intent.putExtra("taskDate",taskModel.date)
+        intent.putExtra("taskDate",taskModel.updatedAt)
 
 
         startActivity(intent)

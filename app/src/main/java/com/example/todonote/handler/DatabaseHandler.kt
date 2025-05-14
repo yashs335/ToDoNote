@@ -1,17 +1,24 @@
 @file:Suppress("UNREACHABLE_CODE")
 
 package com.example.todonote.handler
+
 import java.text.SimpleDateFormat
 import java.util.*
 import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
+import androidx.core.content.ContextCompat.startActivity
+import com.example.todonote.LoginActivity
+import com.example.todonote.MainActivity
 import com.example.todonote.model.TaskModel
-import com.example.todonote.model.UserModel
-import java.sql.Timestamp
+import com.example.todonote.view.ViewAuth
+import com.example.todonote.view.ViewToDo
 
 val DATABASE_NAME = "ToDoListDB"
 val TABLE_NAME = "todos"
@@ -29,14 +36,15 @@ val AUTH_COL_CREATED_AT = "created_at"
 val AUTH_COL_USER_NAME = "user_name"
 
 
-class DatabaseHandler  (private val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,null,1){
+class DatabaseHandler(private val context: Context) :
+    SQLiteOpenHelper(context, DATABASE_NAME, null, 1), ViewAuth, ViewToDo {
     override fun onCreate(db: SQLiteDatabase?) {
 
         val userTable = "CREATE TABLE $AUTH_TABLE_NAME ( " +
-                "$AUTH_COL_USER_ID INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                "$AUTH_COL_USER_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "$AUTH_COL_USER_NAME VARCHAR(50) NOT NULL, " +
                 "$AUTH_COL_EMAIL VARCHAR(100) NOT NULL, " +
-                "$AUTH_COL_PASS VARCHAR(50) NOT NULL , "+
+                "$AUTH_COL_PASS VARCHAR(50) NOT NULL , " +
                 "$AUTH_COL_CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP );"
 
         db?.execSQL(userTable)
@@ -47,8 +55,8 @@ class DatabaseHandler  (private val context: Context) : SQLiteOpenHelper(context
                 "$COL_TASK VARCHAR(200) NOT NULL, " +
                 "$COL_CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
                 "$COL_UPDATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
-                "$AUTH_COL_USER_ID INTEGER NOT NULL, "+
-                "FOREIGN KEY ($AUTH_COL_USER_NAME) REFERENCES $AUTH_TABLE_NAME($AUTH_COL_USER_ID) ON DELETE CASCADE);"
+                "$AUTH_COL_EMAIL VARCHAR(100) NOT NULL, " +
+                "FOREIGN KEY ($AUTH_COL_EMAIL) REFERENCES $AUTH_TABLE_NAME($AUTH_COL_EMAIL) ON DELETE CASCADE);"
 
 
         db?.execSQL(createTable)
@@ -60,67 +68,72 @@ class DatabaseHandler  (private val context: Context) : SQLiteOpenHelper(context
     }
 
 
-    fun createNewTask(id : Int?,title : String,body : String,userId : Int,update : Boolean = false){
+    override fun createNewTask(
+        title: String,
+        body: String
+    ) {
 
         val db = this.writableDatabase
         val dateFormat = SimpleDateFormat("EEEE, dd-MM-yyyy", Locale.getDefault())
         val currentDate = dateFormat.format(Date())
+        val sharedPreferences = context.getSharedPreferences("user", MODE_PRIVATE)
+        val email : String = sharedPreferences.getString("user_email","").toString()
+        Log.i("email",email)
 
         var cv = ContentValues()
-        cv.put(COL_TASK_TITLE,title)
-        cv.put(COL_TASK,body)
+        cv.put(COL_TASK_TITLE, title)
+        cv.put(COL_TASK, body)
         cv.put(COL_UPDATED_AT, currentDate)
-        cv.put(AUTH_COL_USER_ID, userId)
+        cv.put(AUTH_COL_EMAIL, email)
 
-        if(update){
-            db.update(
-                TABLE_NAME,
-                cv,
-                "$COL_ID = ?",
-                arrayOf(id.toString())
-            )
-            Log.i("SQL","update performed")
-        }else{
-            var res = db.insert(TABLE_NAME,null,cv)
+//        if (update) {
+//            db.update(
+//                TABLE_NAME,
+//                cv,
+//                "$COL_ID = ?",
+//                arrayOf(id.toString())
+//            )
+//            Log.i("SQL", "update performed")
+//        } else {
+            var res = db.insert(TABLE_NAME, null, cv)
 
-            if(res == (-1).toLong())
-                Toast.makeText(context, "FAILED TO ADD TASK",Toast.LENGTH_LONG).show()
+            if (res == (-1).toLong())
+                Toast.makeText(context, "FAILED TO ADD TASK", Toast.LENGTH_LONG).show()
             else
-                Toast.makeText(context, "Task added",Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Task added", Toast.LENGTH_LONG).show()
         }
-    }
+//    }
 
-    fun readAllTask(userId: Int) : ArrayList<TaskModel>{
-        val taskList : ArrayList<TaskModel> = ArrayList()
+    override fun readAllTask(email: String): ArrayList<TaskModel> {
+        val taskList: ArrayList<TaskModel> = ArrayList()
 
         val db = this.readableDatabase
 
-        val query = "SELECT * FROM $TABLE_NAME WHERE $AUTH_COL_USER_ID = $userId"
+        val query = "SELECT * FROM $TABLE_NAME WHERE $AUTH_COL_EMAIL = ?"
 
-        val res = db.rawQuery(query,null)
+        val res = db.rawQuery(query, arrayOf(email))
 
-        if(res.moveToFirst()){
+        if (res.moveToFirst()) {
             do {
-                val id : Int = res.getString(res.getColumnIndexOrThrow(COL_ID)).toInt()
-                val taskTitle : String = res.getString(res.getColumnIndexOrThrow(COL_TASK_TITLE))
-                val taskBody : String = res.getString(res.getColumnIndexOrThrow(COL_TASK))
-                val createDate : String = res.getString(res.getColumnIndexOrThrow(COL_CREATED_AT))
-                val updateDate : String = res.getString(res.getColumnIndexOrThrow(COL_UPDATED_AT))
+                val id: Int = res.getString(res.getColumnIndexOrThrow(COL_ID)).toInt()
+                val taskTitle: String = res.getString(res.getColumnIndexOrThrow(COL_TASK_TITLE))
+                val taskBody: String = res.getString(res.getColumnIndexOrThrow(COL_TASK))
+                val createDate: String = res.getString(res.getColumnIndexOrThrow(COL_CREATED_AT))
+                val updateDate: String = res.getString(res.getColumnIndexOrThrow(COL_UPDATED_AT))
 
-                val taskModel : TaskModel = TaskModel(id,userId,taskTitle,taskBody,createDate,updateDate)
+                val taskModel: TaskModel =
+                    TaskModel(id, email, taskTitle, taskBody, createDate, updateDate)
 //                Toast.makeText(context, "Title : "+taskTitle+" TASK : "+taskBody,Toast.LENGTH_LONG).show()
                 taskList.add(taskModel)
-            }while (res.moveToNext())
+            } while (res.moveToNext())
 
-        }else{
-            Toast.makeText(context, "NO Task ",Toast.LENGTH_LONG).show()
         }
         res.close()
         db.close()
         return taskList
     }
 
-    fun deleteTheTask(id : Int){
+    override fun deleteTheTask(id: Int) {
         val db = this.writableDatabase
 
 
@@ -131,58 +144,102 @@ class DatabaseHandler  (private val context: Context) : SQLiteOpenHelper(context
 
     }
 
-    fun loginUser(email : String,pass : String):String?{
+    override fun loginUser(email: String, pass: String): Boolean {
         val db = this.readableDatabase
 
-        val query = "SELECT * FROM $AUTH_TABLE_NAME WHERE $AUTH_COL_EMAIL = $email"
+        try {
+            // Use parameterized query
+            val query = "SELECT * FROM $AUTH_TABLE_NAME WHERE $AUTH_COL_EMAIL = ?"
+            val res = db.rawQuery(query, arrayOf(email))
 
-        val res = db.rawQuery(query,null)
+            if (res.moveToFirst()) {
+                val storedPassword = res.getString(res.getColumnIndexOrThrow(AUTH_COL_PASS))
 
-        if(res.moveToFirst()){
-            do {
-                val id : Int = res.getInt(res.getColumnIndexOrThrow(AUTH_COL_USER_ID))
-                val emailSql : String = res.getString(res.getColumnIndexOrThrow(AUTH_COL_EMAIL))
-                val password : String = res.getString(res.getColumnIndexOrThrow(AUTH_COL_PASS))
-
-                if(emailSql == email && password != pass){
-                    return "Invalid password"
-                }else if(email == emailSql || password == pass){
-                    return null
+                return if (storedPassword == pass) {
+                    saveUser(email)
+                    true
+                } else {
+                    Toast.makeText(context, "Invalid password", Toast.LENGTH_LONG).show()
+                    false
                 }
-                return "User Not Found"
-            }while (res.moveToNext())
-        }else{
-            Toast.makeText(context,"User not found",Toast.LENGTH_LONG).show()
-            return "User not found"
+            } else {
+                Toast.makeText(context, "User not found", Toast.LENGTH_LONG).show()
+                return false
+            }
+
+        } catch (e: Exception) {
+            Log.e("DB_ERROR", "Login Error: ${e.message}")
+            Toast.makeText(context, "An error occurred", Toast.LENGTH_LONG).show()
+        } finally {
+            db.close()
         }
-        db.close()
+
+        return false
     }
 
-    fun signUp(email : String,pass: String,userName : String,id: Int?,update : Boolean = false) {
-        val user : String? = loginUser(email,pass)
+    fun saveUser(email: String) {
+        try {
+            val sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
 
-        if(user == null){
-            Toast.makeText(context, "User already exist ",Toast.LENGTH_LONG).show()
-            return
-        }else{
-            val db = this.writableDatabase
+            editor.putString("user_email", email)
+            editor.apply() // or use .commit() to write synchronously
+//
+//            Log.i("SharedPrefs", "User email saved: $email")
 
-
-            val cv = ContentValues()
-            cv.put(AUTH_COL_EMAIL,email)
-            cv.put(AUTH_COL_PASS,pass)
-            cv.put(AUTH_COL_USER_NAME,userName)
-
-            if(update){
-                Toast.makeText(context,"  P  ",Toast.LENGTH_LONG).show()
-            }else{
-                val res = db.insert(AUTH_TABLE_NAME,null,cv)
-                if(res == (-1).toLong())
-                    Toast.makeText(context, "FAILED TO SIGN UP",Toast.LENGTH_LONG).show()
-//                else
-//                    Toast.makeText(context, "LOGIN",Toast.LENGTH_LONG).show()
-            }
+        } catch (e: Exception) {
+            Log.e("DB_ERROR", "saveUser Error: ${e.message}")
+            Toast.makeText(context, "An error occurred", Toast.LENGTH_LONG).show()
         }
+    }
+
+
+    override fun signUp(email: String, pass: String, userName: String) : Boolean{
+        val db = this.writableDatabase
+
+        try {
+            val cursor = db.rawQuery(
+                "SELECT * FROM $AUTH_TABLE_NAME WHERE $AUTH_COL_EMAIL = ?",
+                arrayOf(email)
+            )
+
+            if (cursor.moveToFirst()) {
+                Toast.makeText(context, "User already exists", Toast.LENGTH_LONG).show()
+                cursor.close()
+                return false
+            }
+            cursor.close()
+
+            val cv = ContentValues().apply {
+                put(AUTH_COL_EMAIL, email)
+                put(AUTH_COL_PASS, pass)
+                put(AUTH_COL_USER_NAME, userName)
+            }
+
+            val result = db.insert(AUTH_TABLE_NAME, null, cv)
+            if (result == -1L) {
+                Toast.makeText(context, "Failed to sign up", Toast.LENGTH_LONG).show()
+                return false
+            } else {
+                Toast.makeText(context, "Signup successful", Toast.LENGTH_LONG).show()
+                saveUser(email)
+                return true
+            }
+
+        } catch (e: Exception) {
+            Log.e("DB_ERROR", "Signup Error: ${e.message}")
+            Toast.makeText(context, "An error occurred", Toast.LENGTH_LONG).show()
+        } finally {
+            db.close()
+        }
+        return false
+    }
+
+    override fun logOut() {
+        val sharedPreferences: SharedPreferences =
+            context.getSharedPreferences("user", MODE_PRIVATE)
+        sharedPreferences.edit().remove("user_email").apply()
+//        sharedPreferences.edit().putString("user_email","").apply()
 
     }
 }

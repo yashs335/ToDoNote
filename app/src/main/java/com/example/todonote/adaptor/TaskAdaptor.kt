@@ -65,7 +65,7 @@ class TaskAdaptor(
 //        holder.itemView.performLongClick()
         holder.title.text = taskList[position].title
         holder.subtitle.text = taskList[position].task
-        holder.date.text = taskList[position].date
+        holder.date.text = taskList[position].updatedAt
 
     }
 }

@@ -6,7 +6,7 @@ import java.sql.Timestamp
 
 class TaskModel(
     val id: Int,
-    val userId : Int,
+    val userEmail : String,
     val title: String,
     val task: String,
     val createdAt : String,

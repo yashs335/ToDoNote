@@ -66,7 +66,7 @@ class AddNewTaskActivity() : AppCompatActivity() {
             if(editText_body.text.trim().isEmpty() || editText_title.text.trim().isEmpty()){
                 Toast.makeText(this,"Please full fill the task ",Toast.LENGTH_LONG).show()
             }else{
-                databaseHandler.createNewTask(taskId,editText_title.text.toString(),editText_body.text.toString(),update)
+                databaseHandler.createNewTask(editText_title.text.toString(),editText_body.text.toString())
                 startActivity(Intent(this,MainActivity::class.java))
             }
         }

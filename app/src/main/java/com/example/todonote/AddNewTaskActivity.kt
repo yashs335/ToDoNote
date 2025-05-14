@@ -15,6 +15,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavController
 import com.example.todonote.handler.DatabaseHandler
 import com.example.todonote.model.TaskModel
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class AddNewTaskActivity() : AppCompatActivity() {
 
@@ -38,6 +41,8 @@ class AddNewTaskActivity() : AppCompatActivity() {
         val editText_body : EditText = findViewById(R.id.task_body_edit_text)
         val textView : TextView = findViewById(R.id.app_bar_title)
         val textViewDate : TextView = findViewById(R.id.date)
+        val dateFormat = SimpleDateFormat("EEEE, dd-MM-yyyy", Locale.getDefault())
+        val currentDate = dateFormat.format(Date())
 
 
         taskId = intent.getIntExtra("taskId",-1)
@@ -51,11 +56,13 @@ class AddNewTaskActivity() : AppCompatActivity() {
         intent.removeExtra("taskBody")
         intent.removeExtra("taskDate")
 
+        textViewDate.text = currentDate
+
         if(taskTitle != null || taskBody != null || taskDate != null){
-            textView.setText("Edit note")
+            textView.text = "Edit note"
             editText_body.setText(taskBody)
             editText_title.setText(taskTitle)
-            textViewDate.setText(taskDate)
+            textViewDate.text = taskDate
             update = true
         }
 

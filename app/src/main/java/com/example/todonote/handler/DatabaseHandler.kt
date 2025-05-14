@@ -48,7 +48,7 @@ class DatabaseHandler  (private val context: Context) : SQLiteOpenHelper(context
     fun createNewTask(id : Int?,title : String,body : String,update : Boolean = false){
 
         val db = this.writableDatabase
-        val dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("EEEE, dd-MM-yyyy", Locale.getDefault())
         val currentDate = dateFormat.format(Date())
 
         var cv = ContentValues()

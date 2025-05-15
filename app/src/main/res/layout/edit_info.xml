@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/edit_profile_screen"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:paddingTop="10dp"
+        android:id="@+id/user_profile_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+      android:background="@color/button_color"
+       android:backgroundTint="@color/button_color"
+        app:layout_constraintTop_toTopOf="@+id/edit_profile_screen"
+
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+
+        app:layout_constraintTop_toBottomOf="@id/user_profile_appbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+        <ImageButton
+            android:id="@+id/back_profile_btn_nav"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/arrow_back"
+            android:background="@android:color/transparent"
+            android:importantForAccessibility="no"
+            app:tint="@color/white"
+            />
+
+        <TextView
+            android:id="@+id/app_bar_profile_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="EDIT USER PROFILE"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:paddingStart="10dp"
+            android:textColor="@color/white"
+            app:layout_constraintBaseline_toTopOf="parent"
+            />
+
+
+    </LinearLayout>
+</com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/user_profile_appbar"
+        tools:layout_editor_absoluteX="19dp">
+
+        <EditText
+            android:id="@+id/edit_text_full_name_edit"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="20dp"
+            android:autofillHints="user_name"
+            android:background="@drawable/roundable_button"
+            android:backgroundTint="@color/edit_tile_color"
+            android:hint="Full Name"
+            android:inputType="text"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/edit_text_full_name_created_at"
+            android:layout_width="match_parent"
+            android:clickable="false"
+            android:focusable="false"
+            android:enabled="false"
+            android:layout_height="60dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="20dp"
+            android:autofillHints="user_name"
+            android:background="@drawable/roundable_button"
+            android:backgroundTint="@color/edit_tile_color"
+            android:hint="Login At"
+            android:inputType="text"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/edit_text_email_edit"
+            android:clickable="false"
+            android:focusable="false"
+            android:enabled="false"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="8dp"
+            android:background="@drawable/roundable_button"
+            android:backgroundTint="@color/edit_tile_color"
+            android:editable="false"
+            android:hint="Email ID"
+            android:inputType="textEmailAddress"
+            android:padding="10dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/change_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/roundable_button"
+            android:backgroundTint="@color/button_color"
+            android:text="Change name"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Chnage password" />
+
+        <EditText
+            android:id="@+id/edit_text__edit_old_pass"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="8dp"
+            android:autofillHints="old password"
+            android:background="@drawable/roundable_button"
+            android:backgroundTint="@color/edit_tile_color"
+            android:hint="old password"
+            android:inputType="textPassword"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/edit_text__edit_new_pass"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="8dp"
+            android:autofillHints="new password"
+            android:background="@drawable/roundable_button"
+            android:backgroundTint="@color/edit_tile_color"
+            android:hint="new password"
+            android:inputType="textPassword"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/edit_text__edit_new_confirm_pass"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="8dp"
+            android:autofillHints="new password"
+            android:background="@drawable/roundable_button"
+            android:backgroundTint="@color/edit_tile_color"
+            android:hint="confirm password"
+            android:inputType="textPassword"
+            android:padding="10dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/change_password"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/roundable_button"
+            android:backgroundTint="@color/button_color"
+            android:text="change password"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

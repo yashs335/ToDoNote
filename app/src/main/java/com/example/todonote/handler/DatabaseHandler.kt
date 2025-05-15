@@ -6,19 +6,17 @@ import java.text.SimpleDateFormat
 import java.util.*
 import android.content.ContentValues
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
-import androidx.core.content.ContextCompat.startActivity
-import com.example.todonote.LoginActivity
-import com.example.todonote.MainActivity
 import com.example.todonote.model.TaskModel
+import com.example.todonote.model.UserModel
 import com.example.todonote.view.ViewAuth
 import com.example.todonote.view.ViewToDo
+import java.sql.Timestamp
 
 val DATABASE_NAME = "ToDoListDB"
 val TABLE_NAME = "todos"
@@ -200,7 +198,7 @@ class DatabaseHandler(private val context: Context) :
             editor.putString("user_email", email)
             editor.apply() // or use .commit() to write synchronously
 //
-            Log.i("SharedPrefs login ", "User email saved: $email")
+//            Log.i("SharedPrefs login ", "User email saved: $email")
 
         } catch (e: Exception) {
             Log.e("DB_ERROR", "saveUser Error: ${e.message}")
@@ -255,5 +253,38 @@ class DatabaseHandler(private val context: Context) :
         sharedPreferences.edit().remove("user_email").apply()
 //        sharedPreferences.edit().putString("user_email","").apply()
 
+    }
+
+    override fun getUser(): UserModel? {
+        val userModel : UserModel
+        val sharedPreferences = context.getSharedPreferences("user", MODE_PRIVATE)
+        val email : String = sharedPreferences.getString("user_email","").toString()
+        if(email.isEmpty()){
+            Toast.makeText(context,"Failed to fetch user info",Toast.LENGTH_LONG).show()
+            return null
+        }else{
+            val db = this.readableDatabase
+            val query = "SELECT * FROM $AUTH_TABLE_NAME WHERE $AUTH_COL_EMAIL = ?"
+            val raw = db.rawQuery(query, arrayOf(email))
+            if(raw.moveToFirst()){
+                val userName = raw.getString(raw.getColumnIndexOrThrow(AUTH_COL_USER_NAME))
+                val userPass = raw.getString(raw.getColumnIndexOrThrow(AUTH_COL_PASS))
+                val createdAt = raw.getString(raw.getColumnIndexOrThrow(AUTH_COL_CREATED_AT))
+                val userId = raw.getInt(raw.getColumnIndexOrThrow(AUTH_COL_USER_ID))
+                val timeStamp : Timestamp =  Timestamp.valueOf(createdAt)
+                userModel = UserModel(userId,userName,email,userPass,timeStamp)
+                return userModel
+            }
+            Toast.makeText(context,"Failed to fetch user info",Toast.LENGTH_LONG).show()
+            return null
+        }
+    }
+
+    override fun changePass(oldPass: String, newPass: String): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun changeUserName(userName: String): Boolean {
+        TODO("Not yet implemented")
     }
 }

@@ -2,9 +2,10 @@ package com.example.todonote.presenter
 
 import android.content.Context
 import com.example.todonote.handler.DatabaseHandler
+import com.example.todonote.model.UserModel
 import com.example.todonote.view.ViewAuth
 
-class Presenter(val context: Context) : ViewAuth {
+class Presenter(val context: Context) : ViewAuth{
     private lateinit var databaseHandler: DatabaseHandler
 
     override fun loginUser(email: String, pass: String): Boolean {
@@ -20,6 +21,19 @@ class Presenter(val context: Context) : ViewAuth {
     override fun logOut() {
         databaseHandler = DatabaseHandler(context)
         return databaseHandler.logOut()
+    }
+
+    override fun getUser(): UserModel? {
+        databaseHandler = DatabaseHandler(context)
+        return databaseHandler.getUser()
+    }
+
+    override fun changePass(oldPass: String, newPass: String): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun changeUserName(userName: String): Boolean {
+        TODO("Not yet implemented")
     }
 
 }

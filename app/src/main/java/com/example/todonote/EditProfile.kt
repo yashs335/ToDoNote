@@ -2,16 +2,24 @@ package com.example.todonote
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
+import com.example.todonote.fragment.EditInfo
+import com.example.todonote.fragment.UserProfile
+import com.example.todonote.model.UserModel
 import com.example.todonote.presenter.Presenter
+import com.example.todonote.view.Communicator
+import com.example.todonote.view.CommunicatorEditProfile
 
-class EditProfile : AppCompatActivity() {
+class EditProfile : AppCompatActivity() , CommunicatorEditProfile{
 
     private var presenter : Presenter = Presenter(this)
 
@@ -22,27 +30,42 @@ class EditProfile : AppCompatActivity() {
 
         val editInfo : Boolean = false
 
-        val user_name : EditText = findViewById(R.id.edit_text_full_name_signup)
-        val user_email : EditText = findViewById(R.id.edit_text_email_signup)
-        val user_pass : EditText = findViewById(R.id.edit_text__edit_old_pass)
-        val user_new : EditText = findViewById(R.id.edit_text__edit_new_pass)
-
-        val logOutbutton : Button = findViewById(R.id.log_out_button)
-        val backButton : ImageButton = findViewById(R.id.back_profile_btn)
+        setFragment(UserProfile())
 
 
 
-        backButton.setOnClickListener {
-            finish()
-        }
+    }
 
-        logOutbutton.setOnClickListener{
-            presenter.logOut()
-            val intent: Intent = Intent(this, LoginActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            this.startActivity(intent)
-        }
+    override fun setFragment(fragment: Fragment) {
+        Log.i("nav","navigation run in ${fragment.javaClass}")
+        val fragmentManager = supportFragmentManager
+        val fragmentTransient = fragmentManager.beginTransaction()
+        fragmentTransient.replace(R.id.edit_profile_fragment_container,fragment).commit()
+    }
 
+    override fun getUser(): UserModel? {
+        return presenter.getUser()
+    }
+
+    override fun changePass(oldPass: String, newPass: String): Boolean {
+        Toast.makeText(this,"Change password call ",Toast.LENGTH_LONG).show()
+        return false
+    }
+
+    override fun changeUserName(userName: String): Boolean {
+        Toast.makeText(this,"Change username call ",Toast.LENGTH_LONG).show()
+return false
+    }
+
+    override fun logout() {
+        presenter.logOut()
+        val intent: Intent = Intent(this, LoginActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        this.startActivity(intent)
+    }
+
+    override fun returnHomeScreen() {
+        finish()
     }
 }

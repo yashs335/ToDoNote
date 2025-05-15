@@ -65,11 +65,14 @@ class MainActivity : AppCompatActivity() {
 
         val editProfileButton : ImageButton = findViewById(R.id.profile_edit_nav)
         editProfileButton.setOnClickListener{
-            databaseHandler.logOut()
-            val intent: Intent = Intent(this, LoginActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            val intent: Intent = Intent(this, EditProfile::class.java)
             this.startActivity(intent)
+
+//            databaseHandler.logOut()
+//            val intent: Intent = Intent(this, LoginActivity::class.java)
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//            this.startActivity(intent)
         }
 
     }

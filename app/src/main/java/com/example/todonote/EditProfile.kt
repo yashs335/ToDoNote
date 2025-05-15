@@ -61,7 +61,8 @@ class EditProfile : AppCompatActivity() , CommunicatorEditProfile{
 
     override fun logout() {
         presenter.logOut()
-        val intent: Intent = Intent(this, LoginActivity::class.java)
+        val intent: Intent = Intent(this, MainActivity::class.java)
+        finish()
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         this.startActivity(intent)
@@ -69,5 +70,9 @@ class EditProfile : AppCompatActivity() , CommunicatorEditProfile{
 
     override fun returnHomeScreen() {
         finish()
+    }
+
+    override fun makeToast(mes: String) {
+        Toast.makeText(this,mes,Toast.LENGTH_LONG).show()
     }
 }

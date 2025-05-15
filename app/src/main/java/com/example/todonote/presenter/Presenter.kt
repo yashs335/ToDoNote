@@ -28,12 +28,15 @@ class Presenter(val context: Context) : ViewAuth{
         return databaseHandler.getUser()
     }
 
-    override fun changePass(oldPass: String, newPass: String): Boolean {
-        TODO("Not yet implemented")
+    override fun changePass(newPass: String): Boolean {
+        databaseHandler = DatabaseHandler(context)
+        return databaseHandler.changePass(newPass)
     }
 
+
     override fun changeUserName(userName: String): Boolean {
-        TODO("Not yet implemented")
+        databaseHandler = DatabaseHandler(context)
+        return databaseHandler.changeUserName(userName)
     }
 
 }

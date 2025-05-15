@@ -72,7 +72,10 @@ class AddNewTaskActivity() : AppCompatActivity() {
                 }else{
                     databaseHandler.createNewTask(editText_title.text.toString(),editText_body.text.toString())
                 }
-                startActivity(Intent(this,MainActivity::class.java))
+                val intent : Intent = Intent(this,MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
             }
         }
 

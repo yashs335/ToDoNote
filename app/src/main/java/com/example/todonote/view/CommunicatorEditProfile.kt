@@ -9,4 +9,5 @@ interface CommunicatorEditProfile {
     fun changeUserName(userName: String) : Boolean
     fun logout()
     fun returnHomeScreen()
+    fun makeToast(mes : String)
 }

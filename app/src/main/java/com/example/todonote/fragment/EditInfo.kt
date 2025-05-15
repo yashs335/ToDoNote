@@ -47,11 +47,44 @@ class EditInfo : Fragment(R.layout.edit_info) {
         }
 
         changeUserName.setOnClickListener{
-            communicatorEditProfile.changeUserName(user_name.text.toString())
+            if(user_name.text.trim().isEmpty()){
+                user_name.error = "Please enter new username"
+            }else if (user_name.text.trim().toString() == userModel?.userName) {
+                user_name.error = "Please enter a new username different from the current one"
+            }else{
+                communicatorEditProfile.changeUserName(user_name.text.trim().toString())
+                communicatorEditProfile.setFragment(EditInfo())
+            }
         }
 
         changePass.setOnClickListener{
-            communicatorEditProfile.changePass(user_pass.text.toString(),user_new_pass.text.toString())
+            val oldPass = user_pass.text.toString()
+            val newPass = user_new_pass.text.toString()
+            val newConfPass = user_new_conf_pass.text.toString()
+            if (oldPass.isEmpty()) {
+                user_pass.error = "Please enter your old password"
+            } else if (newPass.isEmpty()) {
+                user_new_pass.error = "Please enter your new password"
+            } else if (newConfPass.isEmpty()) {
+                user_new_conf_pass.error = "Please re-enter your new password"
+            } else if (oldPass.length < 8) {
+                user_pass.error = "Minimum 8 characters"
+            } else if (newPass.length < 8) {
+                user_new_pass.error = "Minimum 8 characters"
+            } else if (newConfPass.length < 8) {
+                user_new_conf_pass.error = "Minimum 8 characters"
+            } else if(newPass != newConfPass){
+                user_new_pass.error = "Password & Confirm Password do not match"
+                user_new_conf_pass.error = "Password & Confirm Password do not match"
+            }else if(newPass == oldPass){
+                communicatorEditProfile.makeToast("Please enter different password")
+            }else if(oldPass == userModel?.userPass){
+                val changePass = communicatorEditProfile.changePass(newPass)
+                if(changePass){
+                    communicatorEditProfile.makeToast("PASSWORD CHANGED")
+                    communicatorEditProfile.setFragment(EditInfo())
+                }
+            }
         }
     }
 

@@ -1,7 +1,6 @@
 package com.example.todonote
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
@@ -12,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todonote.adaptor.TaskAdaptor
-import com.example.todonote.handler.DatabaseHandler
+import com.example.todonote.databasehandler.DatabaseHandler
 import com.example.todonote.model.TaskModel
 
 class MainActivity : AppCompatActivity() {

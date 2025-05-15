@@ -1,6 +1,6 @@
 @file:Suppress("UNREACHABLE_CODE")
 
-package com.example.todonote.handler
+package com.example.todonote.databasehandler
 
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,7 +35,7 @@ val AUTH_COL_USER_NAME = "user_name"
 
 
 class DatabaseHandler(private val context: Context) :
-    SQLiteOpenHelper(context, DATABASE_NAME, null, 1), ViewAuth, ViewToDo {
+SQLiteOpenHelper(context, DATABASE_NAME, null, 1), ViewAuth, ViewToDo {
     override fun onCreate(db: SQLiteDatabase?) {
 
         val userTable = "CREATE TABLE $AUTH_TABLE_NAME ( " +
@@ -280,11 +280,47 @@ class DatabaseHandler(private val context: Context) :
         }
     }
 
-    override fun changePass(oldPass: String, newPass: String): Boolean {
-        TODO("Not yet implemented")
+    override fun changePass(newPass: String): Boolean {
+        val db = this.writableDatabase
+        val query = "SELECT * FROM $AUTH_TABLE_NAME WHERE $AUTH_COL_EMAIL = ? "
+        val sharedPreferences = context.getSharedPreferences("user", MODE_PRIVATE)
+        val email : String = sharedPreferences.getString("user_email","").toString()
+        if(email.isEmpty()) {
+            Toast.makeText(context, "Failed to fetch user info", Toast.LENGTH_LONG).show()
+            return false
+        }else{
+            val contentValues = ContentValues()
+            contentValues.put(AUTH_COL_PASS,newPass)
+            val res = db.update(AUTH_TABLE_NAME,contentValues,"$AUTH_COL_EMAIL = ?",
+                arrayOf(email))
+            if(res == -1){
+                return false
+            }else{
+                Toast.makeText(context, "Password changed", Toast.LENGTH_LONG).show()
+                return true
+            }
+        }
     }
 
     override fun changeUserName(userName: String): Boolean {
-        TODO("Not yet implemented")
+        val db = this.writableDatabase
+        val query = "SELECT * FROM $AUTH_TABLE_NAME WHERE $AUTH_COL_EMAIL = ? "
+        val sharedPreferences = context.getSharedPreferences("user", MODE_PRIVATE)
+        val email : String = sharedPreferences.getString("user_email","").toString()
+        if(email.isEmpty()) {
+            Toast.makeText(context, "Failed to fetch user info", Toast.LENGTH_LONG).show()
+            return false
+        }else{
+            val contentValues = ContentValues()
+            contentValues.put(AUTH_COL_USER_NAME,userName)
+            val res = db.update(AUTH_TABLE_NAME,contentValues,"$AUTH_COL_EMAIL = ?",
+                arrayOf(email))
+            if(res == -1){
+                return false
+            }else{
+                Toast.makeText(context, "Username changed", Toast.LENGTH_LONG).show()
+                return true
+            }
+        }
     }
 }

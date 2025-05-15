@@ -30,8 +30,8 @@ class UserProfile : Fragment(R.layout.profile_screen_layout) {
         val userModel : UserModel? = communicatorEditProfile.getUser()
 
         if(userModel!=null){
-            view.findViewById<TextView>(R.id.user_name).setText(userModel.userName)
-            view.findViewById<TextView>(R.id.user_email).setText(userModel.userEmail)
+            view.findViewById<TextView>(R.id.user_name).text = userModel.userName
+            view.findViewById<TextView>(R.id.user_email).text = userModel.userEmail
         }
 
         editButton.setOnClickListener{

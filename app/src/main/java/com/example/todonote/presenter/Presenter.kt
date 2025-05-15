@@ -1,7 +1,7 @@
 package com.example.todonote.presenter
 
 import android.content.Context
-import com.example.todonote.handler.DatabaseHandler
+import com.example.todonote.databasehandler.DatabaseHandler
 import com.example.todonote.model.UserModel
 import com.example.todonote.view.ViewAuth
 

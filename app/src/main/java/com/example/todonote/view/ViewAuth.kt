@@ -9,6 +9,6 @@ interface ViewAuth{
     fun signUp(email : String,pass: String,userName : String):Boolean
     fun logOut()
     fun getUser() : UserModel?
-    fun changePass(oldPass : String,newPass : String) : Boolean
+    fun changePass(newPass : String) : Boolean
     fun changeUserName(userName: String) : Boolean
 }

@@ -47,14 +47,16 @@ class EditProfile : AppCompatActivity() , CommunicatorEditProfile{
         return presenter.getUser()
     }
 
-    override fun changePass(oldPass: String, newPass: String): Boolean {
-        Toast.makeText(this,"Change password call ",Toast.LENGTH_LONG).show()
-        return false
+    override fun changePass(newPass: String): Boolean {
+//        Toast.makeText(this,"Change password call ",Toast.LENGTH_LONG).show()
+        return presenter.changePass(newPass)
     }
 
+
+
     override fun changeUserName(userName: String): Boolean {
-        Toast.makeText(this,"Change username call ",Toast.LENGTH_LONG).show()
-return false
+//        Toast.makeText(this,"Change username call ",Toast.LENGTH_LONG).show()
+            return presenter.changeUserName(userName)
     }
 
     override fun logout() {

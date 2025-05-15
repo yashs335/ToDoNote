@@ -8,7 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import com.example.todonote.handler.DatabaseHandler
+import com.example.todonote.databasehandler.DatabaseHandler
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

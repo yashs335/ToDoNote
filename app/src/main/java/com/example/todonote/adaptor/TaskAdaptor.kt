@@ -12,7 +12,7 @@ import com.example.todonote.view_holder.TaskViewHolder
 
 
 class TaskAdaptor(
-    private val onCheckChanged:(position : Int)->Unit,
+    private val onTaskChanged:(position : Int)->Unit,
     private val onDeleteChanged:(position : Int)->Unit,
     private val context: Context,
     private val taskList: ArrayList<TaskModel>
@@ -34,7 +34,7 @@ class TaskAdaptor(
         super.onBindViewHolder(holder, position, payloads)
 
         holder.itemView.setOnClickListener{
-            onCheckChanged(position)
+            onTaskChanged(position)
         }
 
 

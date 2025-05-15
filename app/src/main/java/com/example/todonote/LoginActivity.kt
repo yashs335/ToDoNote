@@ -41,20 +41,24 @@ class LoginActivity : AppCompatActivity() , Communicator{
 
     override fun getLogin(email: String, pass: String) {
         presenter = Presenter(this)
-        presenter.loginUser(email,pass)
-        val intent : Intent = Intent(this,MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
+        val login : Boolean = presenter.loginUser(email,pass)
+        if(login){
+            val intent : Intent = Intent(this,MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+        }
     }
 
     override fun getSignUp(email: String, pass: String, userName: String) {
         presenter =Presenter(this)
-        presenter.signUp(email,pass,userName)
-       val intent : Intent = Intent(this,MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
+        val signup : Boolean = presenter.signUp(email,pass,userName)
+        if(signup){
+            val intent : Intent = Intent(this,MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+        }
     }
 
 

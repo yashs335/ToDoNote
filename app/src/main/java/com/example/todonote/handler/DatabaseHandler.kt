@@ -78,34 +78,49 @@ class DatabaseHandler(private val context: Context) :
         val currentDate = dateFormat.format(Date())
         val sharedPreferences = context.getSharedPreferences("user", MODE_PRIVATE)
         val email : String = sharedPreferences.getString("user_email","").toString()
-        Log.i("email",email)
+        Log.i("email from create task",email)
 
-        var cv = ContentValues()
+        val cv = ContentValues()
         cv.put(COL_TASK_TITLE, title)
         cv.put(COL_TASK, body)
-        cv.put(COL_UPDATED_AT, currentDate)
+        cv.put(COL_CREATED_AT, currentDate)
         cv.put(AUTH_COL_EMAIL, email)
 
-//        if (update) {
-//            db.update(
-//                TABLE_NAME,
-//                cv,
-//                "$COL_ID = ?",
-//                arrayOf(id.toString())
-//            )
-//            Log.i("SQL", "update performed")
-//        } else {
-            var res = db.insert(TABLE_NAME, null, cv)
+        val res = db.insert(TABLE_NAME, null, cv)
 
-            if (res == (-1).toLong())
+        if (res == (-1).toLong())
                 Toast.makeText(context, "FAILED TO ADD TASK", Toast.LENGTH_LONG).show()
             else
                 Toast.makeText(context, "Task added", Toast.LENGTH_LONG).show()
-        }
+    }
+
+    override fun editTask(title: String, body: String,taskId:Int) {
+        val db = this.writableDatabase
+        val dateFormat = SimpleDateFormat("EEEE, dd-MM-yyyy", Locale.getDefault())
+        val currentDate = dateFormat.format(Date())
+        val sharedPreferences = context.getSharedPreferences("user", MODE_PRIVATE)
+        val email : String = sharedPreferences.getString("user_email","").toString()
+        Log.i("email from edit task",email)
+
+        val cv = ContentValues()
+        cv.put(COL_TASK_TITLE, title)
+        cv.put(COL_TASK, body)
+        cv.put(COL_UPDATED_AT, currentDate)
+
+            db.update(
+                TABLE_NAME,
+                cv,
+                "$COL_ID = ?",
+                arrayOf(taskId.toString())
+            )
+            Log.i("SQL", "task updated")
+    }
 //    }
 
     override fun readAllTask(email: String): ArrayList<TaskModel> {
         val taskList: ArrayList<TaskModel> = ArrayList()
+
+        Log.i("email from realALlTask ",email)
 
         val db = this.readableDatabase
 
@@ -177,7 +192,7 @@ class DatabaseHandler(private val context: Context) :
         return false
     }
 
-    fun saveUser(email: String) {
+    private fun saveUser(email: String) {
         try {
             val sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
             val editor = sharedPreferences.edit()
@@ -185,14 +200,13 @@ class DatabaseHandler(private val context: Context) :
             editor.putString("user_email", email)
             editor.apply() // or use .commit() to write synchronously
 //
-//            Log.i("SharedPrefs", "User email saved: $email")
+            Log.i("SharedPrefs login ", "User email saved: $email")
 
         } catch (e: Exception) {
             Log.e("DB_ERROR", "saveUser Error: ${e.message}")
             Toast.makeText(context, "An error occurred", Toast.LENGTH_LONG).show()
         }
     }
-
 
     override fun signUp(email: String, pass: String, userName: String) : Boolean{
         val db = this.writableDatabase

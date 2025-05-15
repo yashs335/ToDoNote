@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     private val databaseHandler : DatabaseHandler = DatabaseHandler(this)
 
     private var taskList : ArrayList<TaskModel> = ArrayList()
-    lateinit var recyclerAdaptor : TaskAdaptor
+    private lateinit var recyclerAdaptor : TaskAdaptor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,8 +74,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun updateValue(position: Int){
-        val taskId = taskList[position].id
+    private fun updateValue(position: Int){
         val taskModel = taskList[position]
         val intent : Intent = Intent(this,AddNewTaskActivity()::class.java)
 
@@ -88,7 +87,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun delVal(position : Int)  {
+    private fun delVal(position : Int)  {
         val taskId = taskList[position].id
         val taskModel = taskList.get(position)
 

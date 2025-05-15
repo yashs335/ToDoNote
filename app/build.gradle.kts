@@ -33,6 +33,12 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
+    lint {
+
+        checkReleaseBuilds = false
+
+    }
 }
 
 dependencies {

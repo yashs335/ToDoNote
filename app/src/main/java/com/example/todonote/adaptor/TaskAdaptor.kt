@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todonote.R
-import com.example.todonote.databasehandler.DatabaseHandler
 import com.example.todonote.model.TaskModel
 import com.example.todonote.view_holder.TaskViewHolder
 
@@ -21,9 +20,7 @@ class TaskAdaptor(
     RecyclerView.Adapter<TaskViewHolder>() {
 
 
-    private var databaseHandler : DatabaseHandler = DatabaseHandler(
-        context = context
-    )
+
 
 
     override fun onBindViewHolder(
